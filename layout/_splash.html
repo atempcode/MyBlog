@@ -1,0 +1,28 @@
+{% extends "skeleton/_base.html" %}
+
+{% block title %}{{ site.name }}{% endblock %}
+
+{% block content %}
+    <div class="splash vcard">
+        {% filter typogrify %}
+            <p>
+                Hello,
+                I'm
+                <a href="{{ site.full_url }}" class="fn url">Steve<span class="last-name"> Losh</span></a>.
+            </p>
+
+            <p>
+                I'm a
+                <span class="role">programmer, photographer, dancer &amp; bassist</span>
+                from
+                <span class="adr"><span class="locality">Rochester</span>, <span class="region">New&nbsp;York</span></span>.
+            </p>
+
+            <p>
+                If you want to get in touch with me,
+                <a class="email" href="mailto:steve@stevelosh.com">email</a>
+                is best.
+            </p>
+        {% endfilter %}
+    </div>
+{% endblock %}

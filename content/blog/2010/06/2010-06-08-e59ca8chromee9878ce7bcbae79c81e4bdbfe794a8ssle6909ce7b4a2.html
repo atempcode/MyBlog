@@ -1,0 +1,26 @@
+{% extends "_post.html" %}
+{% hyde
+title: "\u5728Chrome\u91CC\u7F3A\u7701\u4F7F\u7528SSL\u641C\u7D22"
+created: 2010-06-08 09:55:50
+%}
+
+{% block article %}
+右击ominibox, 点击Edit Search Engine...
+
+添加新的Search Engine:
+
+[![image][]][]
+
+URL填
+
+[https://www.google.com/search?{google:RLZ}{google:acceptedSuggestion}{google:originalQueryForSuggestion}sourceid=chrome&ie={inputEncoding}&q=%s][]
+
+再把它设成缺省即可.
+
+  [image]: http://www.hezhigeng.com/blog/wp-content/uploads/2010/06/image_thumb.png
+    "image"
+  [![image][]]: http://www.hezhigeng.com/blog/wp-content/uploads/2010/06/image.png
+  [https://www.google.com/search?{google:RLZ}{google:acceptedSuggestion}{google:originalQueryForSuggestion}sourceid=chrome&ie={inputEncoding}&q=%s]:
+    https://www.google.com/search?%7Bgoogle:RLZ%7D%7Bgoogle:acceptedSuggestion%7D%7Bgoogle:originalQueryForSuggestion%7Dsourceid=chrome&ie=%7BinputEncoding%7D&q=%s
+    "https://www.google.com/search?{google:RLZ}{google:acceptedSuggestion}{google:originalQueryForSuggestion}sourceid=chrome&ie={inputEncoding}&q=%s"
+{% endblock %}

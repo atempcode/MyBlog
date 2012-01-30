@@ -1,0 +1,14 @@
+{% extends "_post.html" %}
+{% hyde
+title: One way to make Windows fail to boot
+created: 2008-04-13 00:08:19
+%}
+
+{% block article %}
+1. delete these regkey:
+` [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\CodePage]`
+"1250"="c\_1251.nls" "1251"="c\_1251.nls" "1252"="c\_1251.nls"
+"1253"="c\_1251.nls" "1254"="c\_1251.nls" 2. set the local to English.
+3. reboot. 4. Halt, say windows/system32/config/STSTEM is broken. I
+learn it the hard way... :( I will talk about the story when I am free.
+{% endblock %}

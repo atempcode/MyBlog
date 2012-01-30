@@ -1,0 +1,95 @@
+{% extends "_post.html" %}
+{% hyde
+title: Centralized management of project version
+created: 2004-07-29 00:54:00
+%}
+
+{% block article %}
+(for native VC++ projects only) Nowadays, one solution may contain
+several exe or dll outputs. A best practice is to mark all the output
+binary file the same version when release. We all know we can change the
+version information in the resource editor. But if the solution contains
+many projects, it is boring and error prongingto change the version
+information one by one. So we can centralize the management of the
+version information using include in the rc file. Suppose XYZ company
+has a product named ABC to release, the ABC product include several dll
+outputs. 1. create a basic version information file for all the
+projects. We use a file from MS VSIP SDK in this step and rename it
+XYZ.ver.
+/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+Copyright (c) Microsoft Corporation, All rights reserved. This code
+sample is provided "AS IS" without warranty of any kind, it is not
+recommended for use in a production environment.
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
+///////////////////////////////////////////////////////////////////////////
+// EnvSdkVersion.ver // // Defines the Environment SDK version data //
+///////////////////////////////////////////////////////////////////////////
+\#ifdef RC\_INVOKED \#include // FILEVERSION VER\_FILEVERSION \#ifndef
+VER\_FILEVERSION \#define VER\_FILEVERSION 7,0,4,0 \#endif //
+PRODUCTVERSION VER\_PRODUCTVERSION \#ifndef VER\_PRODUCTVERSION \#define
+VER\_PRODUCTVERSION VER\_FILEVERSION \#endif // FILEFLAGSMASK
+VER\_FILEFLAGSMASK \#define VER\_FILEFLAGSMASK VS\_FFI\_FILEFLAGSMASK //
+FILEFLAGS VER\_FILEFLAGS \#ifndef VER\_PRIVATEBUILD \#define
+VER\_PRIVATEBUILD 0 \#endif \#ifndef VER\_PRERELEASE \#define
+VER\_PRERELEASE VS\_FF\_PRERELEASE \#endif \#ifndef VER\_DEBUG // DEBUG
+flag is set for debug build, not set for retail build \#if
+defined(DEBUG) || defined(\_DEBUG) \#define VER\_DEBUG VS\_FF\_DEBUG
+\#else // DEBUG \#define VER\_DEBUG 0 \#endif // DEBUG \#endif \#define
+VER\_FILEFLAGS (VER\_PRIVATEBUILD|VER\_PRERELEASE|VER\_DEBUG) // FILEOS
+VER\_FILEOS \#ifndef VER\_FILEOS \#define VER\_FILEOS VOS\_\_WINDOWS32
+\#endif // FILETYPE VER\_FILETYPE \#ifndef VER\_FILETYPE \#define
+VER\_FILETYPE VFT\_DLL \#endif // FILESUBTYPE VER\_FILESUBTYPE \#ifndef
+VER\_FILESUBTYPE \#define VER\_FILESUBTYPE VFT2\_UNKNOWN \#endif
+//-------------------------------------------------------------------------
+// StringFileInfo block // VALUE "CompanyName", VER\_COMPANYNAME\_STR
+\#ifndef VER\_COMPANYNAME\_STR \#define VER\_COMPANYNAME\_STR "Microsoft
+Corporation" \#endif // VALUE "FileDescription",
+VER\_FILEDESCRIPTION\_STR EXPORT\_TAG \#ifndef VER\_FILEDESCRIPTION\_STR
+\#define VER\_FILEDESCRIPTION\_STR "Microsoft Visual Studio Environment
+SDK Sample" \#endif // VALUE "FileVersion", VER\_FILEVERSION\_STR
+\#ifndef VER\_FILEVERSION\_STR \#define VER\_FILEVERSION\_STR
+"7.01.0001.0" \#endif // VALUE "InternalName", VER\_INTERNALNAME\_STR
+\#ifndef VER\_INTERNALNAME\_STR \#error Define VER\_INTERNALNAME\_STR
+(".dll") \#endif // VALUE "LegalCopyright", VER\_LEGALCOPYRIGHT\_STR
+\#ifndef VER\_LEGALCOPYRIGHT\_STR \#define VER\_LEGALCOPYRIGHT\_STR
+"Copyright (C) Microsoft Corp. " \#endif // VALUE
+"OriginalFilename",VER\_ORIGINALFILENAME\_STR \#ifndef
+VER\_ORIGINALFILENAME\_STR \#define VER\_ORIGINALFILENAME\_STR
+VER\_INTERNALNAME\_STR \#endif // VALUE "ProductName",
+VER\_PRODUCTNAME\_STR \#ifndef VER\_PRODUCTNAME\_STR \#define
+VER\_PRODUCTNAME\_STR "Microsoft Visual Studio Environment SDK" \#endif
+// VALUE "ProductVersion", VER\_PRODUCTVERSION\_STR \#ifndef
+VER\_PRODUCTVERSION\_STR \#define VER\_PRODUCTVERSION\_STR
+VER\_FILEVERSION\_STR \#endif // VALUE "OleSelfRegister", "" \#define
+VER\_OLESELFREGISTER \#ifdef VER\_LANGUAGENEUTRAL \#define
+VER\_BLOCKHEADER "000004b0" \#define VER\_TRANSLATION 0x0 \#else
+\#define VER\_BLOCKHEADER "040904B0" \#define VER\_TRANSLATION 0x409
+\#endif // StringFileInfo block
+//-------------------------------------------------------------------------
+/////////////////////////////////////////////////////////////////////////////
+// // Version // VS\_VERSION\_INFO VERSIONINFO FILEVERSION
+VER\_FILEVERSION PRODUCTVERSION VER\_PRODUCTVERSION FILEFLAGSMASK
+VER\_FILEFLAGSMASK FILEFLAGS VER\_FILEFLAGS FILEOS VER\_FILEOS FILETYPE
+VER\_FILETYPE FILESUBTYPE VER\_FILESUBTYPE BEGIN BLOCK "StringFileInfo"
+BEGIN BLOCK VER\_BLOCKHEADER BEGIN VALUE "CompanyName",
+VER\_COMPANYNAME\_STR VALUE "FileDescription", VER\_FILEDESCRIPTION\_STR
+VALUE "FileVersion", VER\_FILEVERSION\_STR VALUE "InternalName",
+VER\_INTERNALNAME\_STR VALUE "LegalCopyright", VER\_LEGALCOPYRIGHT\_STR
+VALUE "OriginalFilename",VER\_ORIGINALFILENAME\_STR VALUE "ProductName",
+VER\_PRODUCTNAME\_STR VALUE "ProductVersion", VER\_PRODUCTVERSION\_STR
+\#ifdef VER\_OLESELFREGISTER VALUE "OleSelfRegister", "" \#endif END END
+BLOCK "VarFileInfo" BEGIN VALUE "Translation", VER\_TRANSLATION, 0x04B0
+END END \#endif // RC\_INVOKED 2. Create a version information file of
+ourselves named abc.ver. \#define VER\_FILEVERSION 1,0,1,28 \#define
+VER\_COMPANYNAME\_STR "XYZ Ltd." \#define VER\_FILEDESCRIPTION\_STR
+"ABC" \#define VER\_FILEVERSION\_STR "1.0.1.28" \#define
+VER\_LEGALCOPYRIGHT\_STR "Copyright (C) 2004 XYZ Ltd. " \#define
+VER\_PRODUCTNAME\_STR "XYZ's ABC " All the dlls will be marked as
+1.0.1.28. 3. edit every project's rc file. remove the VS\_VERSION\_INFO
+VERSIONINFO section, and replace with these code: \#define
+VER\_INTERNALNAME\_STR "" \#define VER\_ORIGINALFILENAME\_STR ""
+\#define VER\_LANGUAGENEUTRAL \#include "abc.ver" \#include "xyz.ver"
+OK, now every time you need to change the version number of product, you
+only need to modify one file: the abc.ver. This trick is very useful in
+the daily build process, that's the story for another blog entry.
+{% endblock %}

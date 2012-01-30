@@ -1,0 +1,75 @@
+{% extends "_post.html" %}
+{% hyde
+title: Something about MS Help 2 (3) -  Search in VS2005 Help
+created: 2007-04-04 14:22:00
+%}
+
+{% block article %}
+VS2005 的帮助search中有两个新的概念: categories 和 filters. 图中 Language就是一个Category,
+它包含了很多filters. 这些filter (象 C\#, C++等) 是以checkbox的形式表现, 可想而知他们之间是 OR 的关系.
+
+[![image][]][]
+
+假设我们现在为BIOS开发准备一套帮助, 并准备把它集成到VS2005的帮助系统中. 我们想定义一个新的 categories 叫 BIOS
+Tech, 里面有两个filters: Phoenix和Award, 分别对应两种不同的BIOS, 哪应该怎么做呢?
+
+MS用XML 来描述filters. 这些XML文件都在 [x:]\\Program Files\\Common
+Files\\Microsoft Shared\\VS Help Data\\8.0\\Filters\\1033\\目录下.
+另外当然以MS的脾气, 肯定少不了要在注册表里加点东西:
+
+**[HKEY\_LOCAL\_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\8.0\\Help\\VisibleFilters]**
+\
+"XMLFilterFileNameWithoutExtension"=dword:00000001
+
+我们在目录下建好两个XML文件, 分别叫Award.xml和Phoenix.xml. 并且要在注册表里加上:
+
+**[HKEY\_LOCAL\_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\8.0\\Help\\VisibleFilters]**
+\
+"Phoenix"=dword:00000001
+
+"Award"=dword:00000001
+
+Award.xml: \
+[http://schemas.microsoft.com/VisualStudio/2004/08/Help/SearchFilter"][]
+Version="0.1.0.0"\>
+
+PTL \
+BIOS Tech
+
+PTL\_Filter \
+Award
+
+("Bios\_Tech"="Award")
+
+]]\>
+
+Phoenix.xml \
+[http://schemas.microsoft.com/VisualStudio/2004/08/Help/SearchFilter"][]
+Version="0.1.0.0"\>
+
+PTL \
+BIOS Tech
+
+PTL\_Filter\_2 \
+Phoenix
+
+("Bios\_Tech"="Phoenix")
+
+]]\>
+
+对照这个图, 看看大家就会明白这些tag是什么意思, 不用多讲.
+
+[![image][1]][]
+
+要注意的是("Bios\_Tech"="Phoenix"), 这是真正起作用的filter表达式.
+如果想让一页内容在对应Phoenix的filter的search中被找到, 那就要在这一页的document attributes中加上
+
+这样内容和filter就关联起来了.
+
+  [image]: http://www.cnblogs.com/images/cnblogs_com/atempcode/WindowsLiveWriter/SomethingaboutMSHelp23WhatsnewinVS2005_BEB4/helphelp_thumb[2].png
+  [![image][]]: http://www.cnblogs.com/images/cnblogs_com/atempcode/WindowsLiveWriter/SomethingaboutMSHelp23WhatsnewinVS2005_BEB4/helphelp[4].png
+  [http://schemas.microsoft.com/VisualStudio/2004/08/Help/SearchFilter"]:
+    http://schemas.microsoft.com/VisualStudio/2004/08/Help/SearchFilter%22
+  [1]: http://www.cnblogs.com/images/cnblogs_com/atempcode/WindowsLiveWriter/SomethingaboutMSHelp23WhatsnewinVS2005_BEB4/helphelp2_thumb.png
+  [![image][1]]: http://www.cnblogs.com/images/cnblogs_com/atempcode/WindowsLiveWriter/SomethingaboutMSHelp23WhatsnewinVS2005_BEB4/helphelp2[2].png
+{% endblock %}

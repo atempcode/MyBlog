@@ -1,0 +1,26 @@
+{% extends "_post.html" %}
+{% hyde
+title: Beta is beta - Compatibility issue of VSIP 2005 beta1
+created: 2004-07-07 00:42:00
+%}
+
+{% block article %}
+I have installed VS.Net 2005 and VSIP 2005 on my laptop which have
+VS.net 2003 and VSIP 2003 installed. Yesterday night, when I opened my
+VSIP package project in VS.net 2003 and tried to compile, the output
+package dll could not be registered! The error message said it could not
+find the specified module, but it was there in the debug output folder.
+Then I opened [Regsvr project][] (which seems to be the source code of
+regsvr32.exe) came with the VS.net 2003 to debug. When run to
+Loadlibrary, a error box popped up. ![image][] The output window stopped
+at " Loaded 'C:\\WINDOWS\\system32\\vsassert.dll', No symbols loaded."
+when the error box popped. It turned out that the reason is the
+vsassert.dll depends on the MSVCR80.dll! VSIP 2003 installed its version
+of vsassert.dll in the windows\\system32 folder, and VSIP 2005
+overwrites it with its own version which depends on MSVCR80.dll. Then my
+poor package linked with vsassert.lib failed to register. :( Beta is
+beta...
+
+  [Regsvr project]: ms-help://MS.VSCC.2003/MS.MSDNQTR.2003FEB.1033/vcsample/html/vcsamregsvrsampleinvokesselfregistrationcode.htm
+  [image]: http://www.cnblogs.com/images/cnblogs_com/atempcode/4966/r_error.gif
+{% endblock %}

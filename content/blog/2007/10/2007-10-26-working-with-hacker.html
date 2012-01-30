@@ -1,0 +1,31 @@
+{% extends "_post.html" %}
+{% hyde
+title: HyperCore & Blue Pill
+created: 2007-10-26 10:28:19
+%}
+
+{% block article %}
+from [Joanna Rutkowska's blog][] :
+
+> I also announced that Invisible Things Lab has just started working
+> with Phoenix Technologies. Phoenix is the world leader in system
+> firmware, particularly known for providing BIOSes for PCs for almost
+> 25 years, and currently is working on a new product called HyperCore
+> that would be a very thin and lightweight hypervisor for consumer
+> systems. ITL will be helping Phoenix to ensure the security of this
+> product. HyperCore hypervisor will use all the latest hardware
+> virtualization extensions, like e.g. Nested Paging/EPT to minimize the
+> unnecessary complexity and to provide negligible performance impact.
+> For the same reasons, the I/O access will go through almost natively,
+> just like in case of our Blue Pill... Speaking about Blue Pill –
+> Phoenix is also interested in further research on Blue Pill, which
+> will be used as a test bed for trying various ideas – e.g. nested
+> virtualization, which might be adopted in the future versions of
+> HyperCore to allow users to use other commercial VMMs inside their
+> already-virtualized OSes. Blue Pill’s small size and minimal
+> functionality makes it a convenient tool for experimenting. Phoenix
+> will also support The Blue Pill Project which means that some parts of
+> our research will be available for other researchers (including code)!
+
+  [Joanna Rutkowska's blog]: http://tinyurl.com/3a4xg8
+{% endblock %}

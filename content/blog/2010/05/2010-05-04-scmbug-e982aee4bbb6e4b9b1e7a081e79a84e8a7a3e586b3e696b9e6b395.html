@@ -1,0 +1,38 @@
+{% extends "_post.html" %}
+{% hyde
+title: "SCMBUG \u90AE\u4EF6\u4E71\u7801\u7684\u89E3\u51B3\u65B9\u6CD5"
+created: 2010-05-04 21:28:10
+%}
+
+{% block article %}
+\1. SVNLOOK 的输出不是UTF8, 而是cmd的locale. Linux下可以指定env:
+[http://osdir.com/ml/bug-tracking.scmbug.user/2006-12/msg00072.html][].
+而在Windows下就要指定一下输入格式了:
+
+…\\hooks\\lib\\scmbug\\Scmbug\\Glue\\Subversion.pm
+
+~~~~ {.brush: .patch; .auto-links: .true; .collapse: .false;
+.first-line: .1; .gutter: .true; .html-script: .false; .light: .false;
+.ruler: .false; .smart-tabs: .true; .tab-size: .4; .toolbar: .true;}
+    # Cygwin has a problem with newlines
+    binmode( SVNLOOK_INFO, ":crlf" );
++    binmode( SVNLOOK_INFO, ':encoding(big5)');
+    # First line is the username
+    $line = <SVNLOOK_INFO>;
+~~~~
+
+\2. 指定发出mail的编码.
+
+C:\\Program
+Files\\Scmbug\\share\\scmbug\\lib\\Scmbug\\Daemon\\Process.pm:
+
+~~~~ {.brush: .patch; .auto-links: .true; .collapse: .false;
+.first-line: .1; .gutter: .true; .html-script: .false; .light: .false;
+.ruler: .false; .smart-tabs: .true; .tab-size: .4; .toolbar: .true;}
+    %mail->{ 'X-Mailer' } = "Mail::Sendmail version $Mail::Sendmail::VERSION";
+    +%mail->{'Content-Type'} = 'text/plain; charset="utf-8"';
+    %mail->{ Subject } = $subject;
+~~~~
+
+  [http://osdir.com/ml/bug-tracking.scmbug.user/2006-12/msg00072.html]: http://osdir.com/ml/bug-tracking.scmbug.user/2006-12/msg00072.html
+{% endblock %}

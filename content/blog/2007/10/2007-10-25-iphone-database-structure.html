@@ -1,0 +1,121 @@
+{% extends "_post.html" %}
+{% hyde
+title: iphone database structure
+created: 2007-10-25 14:10:49
+%}
+
+{% block article %}
+/\* \* iphone database structure \* @author zye \* @contact
+zye@tudou.com \* @update 20070924 \* @version 0.1 \* @url
+http://yegq.yeax.com/?p=162 \* @copyleft
+此文档可随意分发。如果你发布的iphone应用得益于此文档，建议注明，或给我email，共贺之。 \*/
+**一、AddressBook.sqlitedb 通讯录数据库** **location:
+/private/var/root/Library/AddressBook/AddressBook.sqlitedb** **1.ABGroup
+联系人分组信息** ROWID:组ID,自增PK Name:组名 **2.ABGroupChanges 分组信息更新** record:
+type: **3.ABGroupMembers 组联系人** UID: PK group\_id：组ID,对应ABGroup.ROWID
+member\_type: 组员类别 member\_id: 组员(联系人)ID,对应ABPerson.ROWID
+注意:UNIQUE(group\_id, member\_type, member\_id) **4.ABMultiValue
+存储联系人的各种联系方式** UID: PK record\_id: 联系人ID,对应ABPerson.ROWID property: 属性值.
+3.电话; 4.email; 待补充… identifier: 标识符.0,1,2,3,4,目前所知用于排序 label: 标志值.
+1.mobile;2.home;3.work;4.other;5.homepage(URL) 对应ABMultiValueLabel.value
+value: 值. 例如一个手机号码13800138000,或一个email地址foo@bar.com
+**5.ABMultiValueEntry (未知)** parent\_id: (未知) key: (未知) value: (未知)
+注意:UNIQUE(parent\_id, key) **6.ABMultiValueEntryKey (未知)** value: (未知)
+注意:UNIQUE(value) **7.ABMultiValueLabel 联系方式标志值列表** value:
+见ABMultiValue.label **8.ABPerson** ROWID 自增PK,也是联系人的唯一标识 First 名字 Last 姓
+Middle (未定) FirstPhonetic (未定,貌似留作语音拨号用的) MiddlePhonetic (未定,貌似留作语音拨号用的)
+LastPhonetic (未定,貌似留作语音拨号用的) Organization 所在公司,组织 Department 所在部门 Note
+注释 Kind 未定 Birthday 生日 JobTitle 头衔 Nickname 昵称 Prefix 前缀 Suffix 后缀
+FirstSort 排序用(具体未知) LastSort 排序用(具体未知) CreationDate 创建时间
+ModificationDate 最后修改时间 CompositeNameFallback (未知) **9.ABPersonChanges
+(未知)** record type **10.ABPersonMultiValueDeletes (未知)** record\_id
+property\_id identifier **11.ABPhoneLastFour 电话号码后四位匹配表** multivalue\_id
+对应ABMultiValue.UID value 电话号码后四位 **12.ABRecent (未知)** date name property
+value **13.sorting\_first\_section\_list (未知)** character number
+**14.sorting\_last\_section\_list (未知)** character number
+**15.sqlite\_sequence (用于记录序列)** name:表命,如ABPerson seq: 最新序列号 —
+==========下面是建表语句========== CREATE TABLE ABGroup (ROWID INTEGER PRIMARY
+KEY AUTOINCREMENT, Name TEXT); CREATE TABLE ABGroupChanges (record
+INTEGER, type INTEGER); CREATE TABLE ABGroupMembers (UID INTEGER PRIMARY
+KEY, group\_id INTEGER, member\_type INTEGER, member\_id INTEGER,
+UNIQUE(group\_id, member\_type, member\_id)); CREATE TABLE ABMultiValue
+(UID INTEGER PRIMARY KEY, record\_id INTEGER, property INTEGER,
+identifier INTEGER, label INTEGER, value TEXT); CREATE TABLE
+ABMultiValueEntry (parent\_id INTEGER, key INTEGER, value TEXT,
+UNIQUE(parent\_id, key)); CREATE TABLE ABMultiValueEntryKey (value TEXT,
+UNIQUE(value)); CREATE TABLE ABMultiValueLabel (value TEXT,
+UNIQUE(value)); CREATE TABLE ABPerson (ROWID INTEGER PRIMARY KEY
+AUTOINCREMENT, First TEXT, Last TEXT, Middle TEXT, FirstPhonetic TEXT,
+MiddlePhonetic TEXT, LastPhonetic TEXT, Organization TEXT, Department
+TEXT, Note TEXT, Kind INTEGER, Birthday TEXT, JobTitle TEXT, Nickname
+TEXT, Prefix TEXT, Suffix TEXT, FirstSort TEXT, LastSort TEXT,
+CreationDate INTEGER, ModificationDate INTEGER, CompositeNameFallback
+TEXT); CREATE TABLE ABPersonChanges (record INTEGER, type INTEGER);
+CREATE TABLE ABPersonMultiValueDeletes (record\_id INTEGER, property\_id
+INTEGER, identifier INTEGER); CREATE TABLE ABPhoneLastFour
+(multivalue\_id INTEGER PRIMARY KEY, value TEXT); CREATE TABLE
+ABRecent(date INTEGER, name, property INTEGER, value); CREATE TABLE
+sorting\_first\_section\_list(character, number, UNIQUE(character));
+CREATE TABLE sorting\_last\_section\_list(character, number,
+UNIQUE(character)); CREATE TABLE sqlite\_sequence(name TEXT, seq
+INTEGER); — ==========下面是创建索引========== CREATE INDEX
+ABMultiValueRecordIDIndex on ABMultiValue(record\_id); CREATE INDEX
+ABMultiValueLabelIndex ON ABMultiValue(label); CREATE INDEX
+ABMultiValueEntryKeyIndex ON ABMultiValueEntry(key); CREATE INDEX
+ABFirstSortIndex on ABPerson(FirstSort); CREATE INDEX ABLastSortIndex on
+ABPerson(LastSort); CREATE INDEX ABPhoneLastFourIndex ON
+ABPhoneLastFour(value); CREATE INDEX ABRecent\_value\_index ON
+ABRecent(property, value); CREATE INDEX ABRecent\_date\_index ON
+ABRecent(property, date); — ==========下面是创建触发器========== CREATE TRIGGER
+delete\_phone\_last\_four AFTER DELETE ON ABMultiValue BEGIN DELETE FROM
+ABPhoneLastFour WHERE multivalue\_id = OLD.UID; END; CREATE TRIGGER
+sorting\_first\_prefix\_trigger AFTER INSERT ON ABPerson BEGIN INSERT OR
+REPLACE INTO sorting\_first\_section\_list
+VALUES(substr(IFNULL(NEW.FirstSort, ‘\~’), 1, 1), 1 + IFNULL((SELECT
+number from sorting\_first\_section\_list WHERE character =
+substr(IFNULL(NEW.FirstSort, ‘\~’), 1, 1)), 0)); END; CREATE TRIGGER
+update\_first\_prefix\_trigger AFTER UPDATE ON ABPerson BEGIN INSERT OR
+REPLACE INTO sorting\_first\_section\_list
+VALUES(substr(IFNULL(OLD.FirstSort, ‘\~’), 1, 1), (SELECT number from
+sorting\_first\_section\_list WHERE character =
+substr(IFNULL(OLD.FirstSort, ‘\~’), 1, 1)) - 1); INSERT OR REPLACE INTO
+sorting\_first\_section\_list VALUES(substr(IFNULL(NEW.FirstSort, ‘\~’),
+1, 1), 1 + IFNULL((SELECT number from sorting\_first\_section\_list
+WHERE character = substr(IFNULL(NEW.FirstSort, ‘\~’), 1, 1)), 0)); END;
+CREATE TRIGGER delete\_first\_prefix\_trigger AFTER DELETE ON ABPerson
+BEGIN INSERT OR REPLACE INTO sorting\_first\_section\_list
+VALUES(substr(IFNULL(OLD.FirstSort, ‘\~’), 1, 1), (SELECT number from
+sorting\_first\_section\_list WHERE character =
+substr(IFNULL(OLD.FirstSort, ‘\~’), 1, 1)) - 1); END; CREATE TRIGGER
+sorting\_last\_prefix\_trigger AFTER INSERT ON ABPerson BEGIN INSERT OR
+REPLACE INTO sorting\_last\_section\_list
+VALUES(substr(IFNULL(NEW.LastSort, ‘\~’), 1, 1), 1 + IFNULL((SELECT
+number from sorting\_last\_section\_list WHERE character =
+substr(IFNULL(NEW.LastSort, ‘\~’), 1, 1)), 0)); END; CREATE TRIGGER
+update\_last\_prefix\_trigger AFTER UPDATE ON ABPerson BEGIN INSERT OR
+REPLACE INTO sorting\_last\_section\_list
+VALUES(substr(IFNULL(OLD.LastSort, ‘\~’), 1, 1), (SELECT number from
+sorting\_last\_section\_list WHERE character =
+substr(IFNULL(OLD.LastSort, ‘\~’), 1, 1)) - 1); INSERT OR REPLACE INTO
+sorting\_last\_section\_list VALUES(substr(IFNULL(NEW.LastSort, ‘\~’),
+1, 1), 1 + IFNULL((SELECT number from sorting\_last\_section\_list WHERE
+character = substr(IFNULL(NEW.LastSort, ‘\~’), 1, 1)), 0)); END; CREATE
+TRIGGER delete\_last\_prefix\_trigger AFTER DELETE ON ABPerson BEGIN
+INSERT OR REPLACE INTO sorting\_last\_section\_list
+VALUES(substr(IFNULL(Old.LastSort, ‘\~’), 1, 1), (SELECT number from
+sorting\_last\_section\_list WHERE character =
+substr(IFNULL(Old.LastSort, ‘\~’), 1, 1)) - 1); END; **二、notes.db
+记事本数据库** **location: /private/var/root/Library/Notes/notes.db** **1.Note
+摘要信息记录表** creation\_date: 创建时间 title: 标题 summary: 摘要 **2.note\_bodies
+详细信息** note\_id: note ID data: 记事内容，包含标题 – ==========下面是建表语句==========
+CREATE TABLE Note (creation\_date INTEGER, title TEXT, summary TEXT);
+CREATE TABLE note\_bodies (note\_id INTEGER, data, UNIQUE(note\_id)); –
+==========下面是创建触发器========== CREATE TRIGGER delete\_note\_bodies AFTER
+DELETE ON Note BEGIN DELETE FROM note\_bodies WHERE note\_id =
+OLD.ROWID; END; **三、sms.db 短信数据库** **location:
+/private/var/root/Library/SMS/sms.db** **1.message 短信表** ROWID: 自增PK
+address: 对方手机号码(+86) date: 时间 text: 内容 flags: 标记. 2.收到的;3.自己发送的 replace:
+(未知) svc\_center: (未知) – ==========下面是建表语句========== CREATE TABLE
+message (ROWID INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, date
+INTEGER, text TEXT, flags INTEGER, replace INTEGER, svc\_center TEXT);
+{% endblock %}

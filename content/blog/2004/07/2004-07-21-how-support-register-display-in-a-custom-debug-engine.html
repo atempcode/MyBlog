@@ -1,0 +1,26 @@
+{% extends "_post.html" %}
+{% hyde
+title: How support register display in a custom debug engine
+created: 2004-07-21 13:58:00
+%}
+
+{% block article %}
+Several days ago, I asked the questions in the new group, yesterday a MS
+guy answered. Jim Glass [MSFT] wrote: \> Michael, \> \> Question: "I
+read through the documents and can not find a way to show the \>
+registers in the Register Window. We want to provide information from
+the \> DE for the registers. Is it possible? Which interface should I
+start with?" \> \> Answer: Registers are obtained by calling
+IDebugStackFrame2::EnumProperties \> with a refiid of
+guidFilterRegisters (defined in msdbg.h as an external \> value).
+EnumProperties is called whenever the Registers Window needs to be \>
+updated. This update will occur only when the program being debug is \>
+stopped, either because the user paused execution or a breakpoint was
+hit. Seems to be 'undocumented' again... Calling
+IDebugStackFrame2::EnumProperties with a refiid of guidFilterRegisters
+returns an IEnumDebugPropertyInfo2 object which contains the enum of
+properties (IDebugProperty2) for different register types. Each one of
+them represents a register type (like CPU, CPU segment, mmx) and has
+children represent the registers. Calling IDebugProperty2::EnumChildren
+to get another enum for the registers.
+{% endblock %}
