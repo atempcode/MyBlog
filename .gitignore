@@ -1,0 +1,9 @@
+*~
+*.pyc
+deploy/*
+*.cprof
+*.profile
+*.log
+pylint*
+*.tmproj
+test_site
