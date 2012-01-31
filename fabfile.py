@@ -2,7 +2,7 @@ from fabric.api import *
 import os
 import fabric.contrib.project as project
 
-PROD = 'sanjose.dreamhost.com'
+PROD = 'michael_he@sanjose.dreamhost.com'
 DEST_PATH = '/home/michael_he/hezhigeng.com/newblog'
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 DEPLOY_PATH = os.path.join(ROOT_PATH, 'deploy')
