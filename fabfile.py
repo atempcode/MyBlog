@@ -11,14 +11,14 @@ def clean():
     local('rm -rf ./deploy')
 
 def generate():
-    local('hyde -g -s .')
+    local('python ../hyde/hyde.py -g -s .')
 
 def regen():
     clean()
     generate()
 
 def serve():
-    local('hyde -w -s . -k')
+    local('python ../hyde/hyde.py -w -s . -k -p 8081')
 
 def reserve():
     regen()
