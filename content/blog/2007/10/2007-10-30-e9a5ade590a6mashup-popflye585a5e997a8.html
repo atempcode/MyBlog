@@ -5,137 +5,125 @@ created: 2007-10-30 22:02:47
 %}
 
 {% block article %}
-Popfly是Microsoft新推出的mashup服务, 其目的是"使得任何技术水平的用户都能够轻松创建或编辑他们自己的mash-up"
-([http://blog.joycode.com/soma/archive/2007/10/29/109761.aspx][] ) . OK,
-轻松创建, 那就来试试吧. 因为对饭否的API比较熟, 就拿它开刀了. Popfly已经提供了一些知名网站的block, 但没有Fanfou的.
-我们就从创建一个Block开始. 选择 crate new -\> block. 左边的会出现两个tab, 一个来编辑描述XML文件,
-一个来编辑javascript文件. (XML+Javascript, 又见黄金组合). XML描述文件里除了一些信息如提供者的名字.
-URL之外, 主要的是Operations元素和Objects元素. 这两个元素一个定义了外部能调用的方法, 一个定义了自定义类的数据成员.
-我这个Block准备提供饭否的随便看看的数据, 所以定义一个Operation: getFriendsTimeLine; 一个自定义类:
-TimeLineCPI. 文件内容如下:
+Popfly是Microsoft新推出的mashup服务, 其目的是"使得任何技术水平的用户都能够轻松创建或编辑他们自己的mash-up" ([http:/
+/blog.joycode.com/soma/archive/2007/10/29/109761.aspx](http://blog.joycode.com
+/soma/archive/2007/10/29/109761.aspx) ) . OK, 轻松创建, 那就来试试吧. 因为对饭否的API比较熟,
+就拿它开刀了.
 
-~~~~ {.brush: .xml; .auto-links: .true; .collapse: .false; .first-line:
-.1; .gutter: .true; .html-script: .false; .light: .false; .ruler:
-.false; .smart-tabs: .true; .tab-size: .4; .toolbar: .true;}
- 
-<?xml version="1.0" encoding="utf-8" ?>
-<block class="FanfouClass">
-<providerName>Fanfou</providerName>
-<providerUrl>http://monologue.wordpress.com.cn</providerUrl>
-<providerLogoUrl></providerLogoUrl>
-<blockIconUrl></blockIconUrl>
-<operations>
-<operation name="getFriendsTimeLine">
-<description>
-Retrieves a list friends' talk.
-</description>
-<inputs />
-<outputs>
-<output isArray="true" type="custom" object="TimeLineCPI" />
-</outputs>
-</operation>
-</operations>
-<objects>
-<object name="TimeLineCPI">
-<field name="created_at" type="date" isArray="false" />
-<field name="id" type="string" isArray="false" />
-<field name="text" type="title" isArray="false" />
-<field name="user_screen_name" type="name" isArray="false" />
-<field name="user_id" type="string" isArray="false" />
-<field name="user_profile_image_url" type="url" isArray="false" />
-<field name="user_profile_url" type="url" isArray="false" />
-</object>
-</objects>
-</block>
-~~~~
+Popfly已经提供了一些知名网站的block, 但没有Fanfou的. 我们就从创建一个Block开始. 选择 crate new -> block.
+左边的会出现两个tab, 一个来编辑描述XML文件, 一个来编辑javascript文件. (XML+Javascript, 又见黄金组合).
+XML描述文件里除了一些信息如提供者的名字. URL之外, 主要的是Operations元素和Objects元素. 这两个元素一个定义了外部能调用的方法,
+一个定义了自定义类的数据成员. 我这个Block准备提供饭否的随便看看的数据, 所以定义一个Operation: getFriendsTimeLine;
+一个自定义类: TimeLineCPI. 文件内容如下:
 
+    
+     
+    <?xml version="1.0" encoding="utf-8" ?>
+    <block class="FanfouClass">
+    <providerName>Fanfou</providerName>
+    <providerUrl>http://monologue.wordpress.com.cn</providerUrl>
+    <providerLogoUrl></providerLogoUrl>
+    <blockIconUrl></blockIconUrl>
+    <operations>
+    <operation name="getFriendsTimeLine">
+    <description>
+    Retrieves a list friends' talk.
+    </description>
+    <inputs />
+    <outputs>
+    <output isArray="true" type="custom" object="TimeLineCPI" />
+    </outputs>
+    </operation>
+    </operations>
+    <objects>
+    <object name="TimeLineCPI">
+    <field name="created_at" type="date" isArray="false" />
+    <field name="id" type="string" isArray="false" />
+    <field name="text" type="title" isArray="false" />
+    <field name="user_screen_name" type="name" isArray="false" />
+    <field name="user_id" type="string" isArray="false" />
+    <field name="user_profile_image_url" type="url" isArray="false" />
+    <field name="user_profile_url" type="url" isArray="false" />
+    </object>
+    </objects>
+    </block>
+    
+
+  
 下面就要来看看JS文件了. 这里面主要就是Operation的实现了. 我是取得XML后, 分析一下, 得到各个Field的值. 代码如下:
 
-~~~~ {.brush: .js; .auto-links: .true; .collapse: .false; .first-line:
-.1; .gutter: .true; .html-script: .false; .light: .false; .ruler:
-.false; .smart-tabs: .true; .tab-size: .4; .toolbar: .true;}
- 
-function FanfouClass()
-{
+    
+     
+    function FanfouClass()
+    {  
+    }  
+    FanfouClass.prototype.getFriendsTimeLine = function (){
+    var url = "http://api.fanfou.com/statuses/public_timeline.xml";
+    var resultXML = environment.getXml(url);  
+    var resultArray  = new Array();
+    if(resultXML.getElementsByTagName("statuses").length >= 1)
+    {
+    var itemNodeList = resultXML.getElementsByTagName('status');
+    var UserNodeList = resultXML.getElementsByTagName('user');
+    var resultNodeCount = itemNodeList.length;
+    var resultArray  = new Array(resultNodeCount);  
+    if(!resultNodeCount || resultNodeCount < 1)
+    {
+    throw "Sorry, it seems that no item returned.";
+    }  
+    for(var i = 0; i < resultNodeCount; i++)
+    {
+    var itemNode = itemNodeList[i];
+    var userNode = UserNodeList[i];
+    if(itemNode)
+    {
+    var created_at = this.getNodeValue(itemNode, 'created_at');
+    var id = this.getNodeValue(itemNode, 'id');
+    var text = this.getNodeValue(itemNode, 'text');
+    var    user_name = this.getNodeValue(userNode, 'name');
+    var    user_screen_name = this.getNodeValue(userNode, 'screen_name');
+    var    user_profile_image_url = this.getNodeValue(userNode, 'profile_image_url');
+    var    user_profile_url = this.getNodeValue(userNode, 'profile_url');
+    var    user_id = this.getNodeValue(userNode, 'id');  
+    resultArray[i] = new TimeLineCPI(created_at, id, text, user_name, user_screen_name, user_id, user_location, user_description, user_profile_image_url, user_profile_url);
+    }
+    }
+    return resultArray;  
+    }
+    else
+    {
+    return resultArray;
+    }
+    };  
+    FanfouClass.prototype.getNodeValue = function(node, nodeName)
+    {
+    if(node.getElementsByTagName(nodeName) && node.getElementsByTagName(nodeName)[0])
+    {
+    return node.getElementsByTagName(nodeName)[0].firstChild.nodeValue;
+    }
+    else
+    {
+    return "";
+    }
+    };  
+    function TimeLineCPI(created_at, id, text, user_name, user_screen_name, user_id, user_profile_image_url, user_profile_url)
+    {
+    this.created_at  = created_at;
+    this.text  = text;
+    this.id  = id;
+    this.user_name = user_name;
+    this.user_screen_name = user_screen_name;
+    this.user_id  = user_id;
+    this.user_profile_image_url  = user_profile_image_url;
+    this.user_profile_url  = user_profile_url;
+    }  
+    TimeLineCPI.prototype.toString = function() {
+    return "<p>"+this.text+"</p>";
+    };
+    
 
-}
+没有错误处理, 呵呵, 仅仅是demo code. 好, 这个Block就算结束了. 怎么用到一个Mashup里去呢? 下一篇再讲.
 
-FanfouClass.prototype.getFriendsTimeLine = function (){
-var url = "http://api.fanfou.com/statuses/public_timeline.xml";
-var resultXML = environment.getXml(url);
+另外, 这个Block我已经共享了, 就叫Fanfou, 在Popfly上可以搜到.
 
-var resultArray  = new Array();
-if(resultXML.getElementsByTagName("statuses").length >= 1)
-{
-var itemNodeList = resultXML.getElementsByTagName('status');
-var UserNodeList = resultXML.getElementsByTagName('user');
-var resultNodeCount = itemNodeList.length;
-var resultArray  = new Array(resultNodeCount);
-
-if(!resultNodeCount || resultNodeCount < 1)
-{
-throw "Sorry, it seems that no item returned.";
-}
-
-for(var i = 0; i < resultNodeCount; i++)
-{
-var itemNode = itemNodeList[i];
-var userNode = UserNodeList[i];
-if(itemNode)
-{
-var created_at = this.getNodeValue(itemNode, 'created_at');
-var id = this.getNodeValue(itemNode, 'id');
-var text = this.getNodeValue(itemNode, 'text');
-var    user_name = this.getNodeValue(userNode, 'name');
-var    user_screen_name = this.getNodeValue(userNode, 'screen_name');
-var    user_profile_image_url = this.getNodeValue(userNode, 'profile_image_url');
-var    user_profile_url = this.getNodeValue(userNode, 'profile_url');
-var    user_id = this.getNodeValue(userNode, 'id');
-
-resultArray[i] = new TimeLineCPI(created_at, id, text, user_name, user_screen_name, user_id, user_location, user_description, user_profile_image_url, user_profile_url);
-}
-}
-return resultArray;
-
-}
-else
-{
-return resultArray;
-}
-};
-
-FanfouClass.prototype.getNodeValue = function(node, nodeName)
-{
-if(node.getElementsByTagName(nodeName) && node.getElementsByTagName(nodeName)[0])
-{
-return node.getElementsByTagName(nodeName)[0].firstChild.nodeValue;
-}
-else
-{
-return "";
-}
-};
-
-function TimeLineCPI(created_at, id, text, user_name, user_screen_name, user_id, user_profile_image_url, user_profile_url)
-{
-this.created_at  = created_at;
-this.text  = text;
-this.id  = id;
-this.user_name = user_name;
-this.user_screen_name = user_screen_name;
-this.user_id  = user_id;
-this.user_profile_image_url  = user_profile_image_url;
-this.user_profile_url  = user_profile_url;
-}
-
-TimeLineCPI.prototype.toString = function() {
-return "<p>"+this.text+"</p>";
-};
-~~~~
-
-没有错误处理, 呵呵, 仅仅是demo code. 好, 这个Block就算结束了. 怎么用到一个Mashup里去呢? 下一篇再讲. 另外,
-这个Block我已经共享了, 就叫Fanfou, 在Popfly上可以搜到.
-
-  [http://blog.joycode.com/soma/archive/2007/10/29/109761.aspx]: http://blog.joycode.com/soma/archive/2007/10/29/109761.aspx
-    "http://blog.joycode.com/soma/archive/2007/10/29/109761.aspx"
 {% endblock %}

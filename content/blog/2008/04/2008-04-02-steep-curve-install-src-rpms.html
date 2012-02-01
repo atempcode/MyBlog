@@ -7,12 +7,12 @@ created: 2008-04-02 14:56:25
 {% block article %}
 有些软件包是以.src.rpm结尾的，这类软件包是包含了源代码的rpm包，在安装时需要进行编译。
 
--   执行rpm -i your-package.src.rpm
--   cd /usr/src/redhat/SPECS
--   rpmbuild -bp your-package.specs 一个和你的软件包同名的specs文件
--   cd /usr/src/redhat/BUILD/your-package/ 一个和你的软件包同名的目录
--   ./configure 这一步和编译普通的源码软件一样，可以加上参数
--   make
--   make install
+  * 执行rpm -i your-package.src.rpm
+  *  cd /usr/src/redhat/SPECS
+  *  rpmbuild -bp your-package.specs 一个和你的软件包同名的specs文件
+  *  cd /usr/src/redhat/BUILD/your-package/ 一个和你的软件包同名的目录
+  *  ./configure 这一步和编译普通的源码软件一样，可以加上参数
+  *  make
+  *  make install
 
 {% endblock %}

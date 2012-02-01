@@ -5,47 +5,52 @@ created: 2010-05-24 15:10:58
 %}
 
 {% block article %}
-UEFI的code里大量使用了double linked list, 每次跟踪时查看list node总是那么痛苦. 在Visual
-Studio里, autoexp.dat 可以定制对复杂类型的"可视化"查看. 这个文件是在 Program Files\\Microsoft
-Visual Studio 9.0\\Common7\\Packages\\Debugger 下, 不过我并不准备去直接修改它.
-一个文档没有记载的小窍门是你可以写一个自己的定义文件, 放在任意路径下, 然后设置环境变量 \_vcee\_autoexp 指向这个文件.
-记得这个文件要以以[Visualizer]开头.
+UEFI的code里大量使用了double linked list, 每次跟踪时查看list node总是那么痛苦. 在Visual Studio里,
+autoexp.dat 可以定制对复杂类型的"可视化"查看. 这个文件是在 Program Files\Microsoft Visual Studio
+9.0\Common7\Packages\Debugger 下, 不过我并不准备去直接修改它. 一个文档没有记载的小窍门是你可以写一个自己的定义文件,
+放在任意路径下, 然后设置环境变量 _vcee_autoexp 指向这个文件. 记得这个文件要以以[Visualizer]开头.
 
-\_EFI\_LIST\_ENTRY是最常用的结构了, 定义是很简单的:
+_EFI_LIST_ENTRY是最常用的结构了, 定义是很简单的:
 
-~~~~ {.brush: .cpp; .auto-links: .true; .collapse: .false; .first-line:
-.1; .gutter: .true; .html-script: .false; .light: .false; .ruler:
-.false; .smart-tabs: .true; .tab-size: .4; .toolbar: .true;}
-typedef struct _EFI_LIST_ENTRY {
-  struct _EFI_LIST_ENTRY  *ForwardLink;
-  struct _EFI_LIST_ENTRY  *BackLink;
-} EFI_LIST_ENTRY;
-~~~~
+    
+    typedef struct _EFI_LIST_ENTRY {
+      struct _EFI_LIST_ENTRY  *ForwardLink;
+      struct _EFI_LIST_ENTRY  *BackLink;
+    } EFI_LIST_ENTRY;
 
-下面就是我为\_EFI\_LIST\_ENTRY写的Visualizer:
+  
 
-~~~~ {.brush: .powershell; .auto-links: .true; .collapse: .false;
-.first-line: .1; .gutter: .true; .html-script: .false; .light: .false;
-.ruler: .false; .smart-tabs: .true; .tab-size: .4; .toolbar: .true;}
-[Visualizer] 
-_EFI_LIST_ENTRY{ 
-    children( 
-            #list( 
-                head: $e.BackLink, 
-                next: BackLink, 
-            ) : &$e 
-    ) 
-}
-~~~~
+下面就是我为_EFI_LIST_ENTRY写的Visualizer:
+
+  
+
+    
+    [Visualizer] 
+    _EFI_LIST_ENTRY{ 
+        children( 
+                #list( 
+                    head: $e.BackLink, 
+                    next: BackLink, 
+                ) : &$e 
+        ) 
+    }
+
+  
+
+
+  
 
 看看效果:
 
-[![example][]][]
+  
 
-Item-\>Protocols,! 是用缺省的方法显示数据, Item-\>Protocols 就是用了我们的Visualizer 了,
+[![example](http://www.hezhigeng.com/blog/wp-
+content/uploads/2010/05/example_thumb.png)](http://www.hezhigeng.com/blog/wp-
+content/uploads/2010/05/example.png)
+
+  
+
+Item->Protocols,! 是用缺省的方法显示数据, Item->Protocols 就是用了我们的Visualizer 了,
 list里的成员以子节点的形式一一显示, 直观多了.
 
-  [example]: http://www.hezhigeng.com/blog/wp-content/uploads/2010/05/example_thumb.png
-    "example"
-  [![example][]]: http://www.hezhigeng.com/blog/wp-content/uploads/2010/05/example.png
 {% endblock %}

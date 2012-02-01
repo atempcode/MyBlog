@@ -5,16 +5,21 @@ created: 2008-11-12 09:29:40
 %}
 
 {% block article %}
-I am happy with the new T61 I got about 6 months ago. During this
-period, there is one issue I can not stand. When I close the lid, T61 is
-supposed to go to sleep. But sometime, all most all the application will
-report an exception and exists. This is pretty annoying. So yesterday, I
-finally got a chance to trace it. 2 of the applications have the
-minidump generated. I copied them to my working folder before Windows
-deletes them. Open one of them in WinDBG, set the symbol path
-(.symbolfix), look into the stack trace (.kd), I can see the exception
-is caused by nview.dll. Same result for another minidump. The root cause
-is the NVidia driver. So the routine steps: download the latest drivers
-from Lenovo site, install it; run autorun.exe, remove all the startup
-items associated with the NVidia driver. No reproducing so long...
+I am happy with the new T61 I got about 6 months ago. During this period,
+there is one issue I can not stand. When I close the lid, T61 is supposed to
+go to sleep. But sometime, all most all the application will report an
+exception and exists. This is pretty annoying.
+
+So yesterday, I finally got a chance to trace it. 2 of the applications have
+the minidump generated. I copied them to my working folder before Windows
+deletes them. Open one of them in WinDBG, set the symbol path (.symbolfix),
+look into the stack trace (.kd), I can see the exception is caused by
+nview.dll. Same result for another minidump.
+
+The root cause is the NVidia driver. So the routine steps: download the latest
+drivers from Lenovo site, install it; run autorun.exe, remove all the startup
+items associated with the NVidia driver.
+
+No reproducing so long...
+
 {% endblock %}
