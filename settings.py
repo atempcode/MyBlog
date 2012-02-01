@@ -12,9 +12,9 @@ BACKUPS_DIR = here('backups')
 BACKUP = False
 
 SITE_ROOT = "/"
-SITE_WWW_URL = "http://www.yoursite.com"
-SITE_NAME = "Your Site"
-SITE_AUTHOR = "Your Name"
+SITE_WWW_URL = "http://www.hezhigeng.com"
+SITE_NAME = "Into The Void"
+SITE_AUTHOR = "Michael He"
 
 #URL Configuration
 GENERATE_ABSOLUTE_FS_URLS = False
