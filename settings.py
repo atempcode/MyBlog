@@ -11,7 +11,7 @@ TMP_DIR = here('deploy_tmp')
 BACKUPS_DIR = here('backups')
 BACKUP = False
 
-SITE_ROOT = "/"
+SITE_ROOT = "/newblog/"
 SITE_WWW_URL = "http://www.hezhigeng.com"
 SITE_NAME = "Into The Void"
 SITE_AUTHOR = "Michael He"
