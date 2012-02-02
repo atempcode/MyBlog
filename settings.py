@@ -132,7 +132,9 @@ CLOSURE_COMPRILER = None
 #HSS_PATH = "./lib/hss-1.0-osx"
 HSS_PATH = None # if you don't want to use HSS
 
-LESS_CSS_PATH = 'D:/src/myblog/less.js/bin/lessc'
+# LESS_CSS_PATH = 'D:/src/myblog/less.js/bin/lessc'
+LESS_CSS_PATH = 'l:/src/newblog/cloudhead-less.js-557177c/bin/lessc'
+
 
 #Django settings
 
