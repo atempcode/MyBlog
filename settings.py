@@ -1,4 +1,6 @@
 import os
+from settings_p import *
+
 here = lambda *x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
 
 #Directories
@@ -80,12 +82,12 @@ MEDIA_PROCESSORS = {
     }
 }
 
-CONTENT_PROCESSORS = {
-    'prerendered\\': {
-        '*.*' :
-            ('hydeengine.content_processors.PassthroughProcessor',)
-            }
-}
+# CONTENT_PROCESSORS = {
+#     'prerendered\\': {
+#         '*.*' :
+#             ('hydeengine.content_processors.PassthroughProcessor',)
+#             }
+# }
 
 SITE_POST_PROCESSORS = {
     # 'media/js': {
@@ -133,7 +135,7 @@ CLOSURE_COMPRILER = None
 HSS_PATH = None # if you don't want to use HSS
 
 # LESS_CSS_PATH = 'D:/src/myblog/less.js/bin/lessc'
-LESS_CSS_PATH = 'l:/src/newblog/cloudhead-less.js-557177c/bin/lessc'
+# LESS_CSS_PATH = 'l:/src/newblog/cloudhead-less.js-557177c/bin/lessc'
 
 
 #Django settings

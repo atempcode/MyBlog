@@ -7,3 +7,4 @@ deploy/*
 pylint*
 *.tmproj
 test_site
+settings_p.py
