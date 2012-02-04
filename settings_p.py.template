@@ -1,0 +1,12 @@
+import os
+
+
+CONTENT_PROCESSORS = {
+    'prerendered/': {
+        '*.*' :
+            ('hydeengine.content_processors.PassthroughProcessor',)
+            }
+}
+
+# LESS_CSS_PATH = 'l:/src/newblog/cloudhead-less.js-557177c/bin/lessc'
+
