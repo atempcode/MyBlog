@@ -30,12 +30,14 @@ Take the Russion for example:
 Change the WiX\build.bat to build the MSI fro the new language. Still take
 Russian for example:
 
-		msbuild svplayer.wixproj /property:Configuration=ReleaseRU /l:FileLogger,Microsoft.Build.Engine;logfile=svplayer.ru.log;verbosity=detailed /t:Clean,Build
+> msbuild svplayer.wixproj /property:Configuration=ReleaseRU /l:FileLogger,Microsoft.Build.Engine;logfile=svplayer.ru.log;verbosity=detailed /t:Clean,Build
 
 Create the transform: update the build.bat file under transform folder:
 
 		... 
-		msitran -g ..\wix\bin\Release\en-US\SvPlayer.msi ..\wix\bin\ReleaseRU\ru-RU\SvPlayer.msi ru.mst ... scripts\wisubstg.vbs ..\..\..\..\SPlayer.msi ru.mst	1049
+		msitran -g ..\wix\bin\Release\en-US\SvPlayer.msi ..\wix\bin\ReleaseRU\ru-RU\SvPlayer.msi ru.mst 
+		... 
+		scripts\wisubstg.vbs ..\..\..\..\SPlayer.msi ru.mst	1049
 		scripts\WiLangId.vbs ..\..\..\..\SPlayer.msi Package 1033,2052,1028,1049
 
 
