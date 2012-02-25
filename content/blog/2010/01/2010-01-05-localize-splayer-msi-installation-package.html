@@ -17,6 +17,7 @@ MSDN:[http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx](http://msdn.micros
 
 Take the Russion for example:
 
+{% syntax xml %}
 		<PropertyGroup Condition=" '$(Configuration)|$(Platform)' =='ReleaseRU|x86' ">
 			<DefineConstants>locale=1049;codepage=1251</DefineConstants> 
 			<Cultures>ru-RU</Cultures> 
@@ -24,6 +25,7 @@ Take the Russion for example:
 		    <OutputPath>bin\$(Configuration)\</OutputPath> 
 		    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath> 
 		</PropertyGroup>
+{% endsyntax  %}
 
 Change the WiX\build.bat to build the MSI fro the new language. Still take
 Russian for example:
