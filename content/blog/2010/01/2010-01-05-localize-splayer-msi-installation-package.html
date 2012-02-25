@@ -13,38 +13,29 @@ translation of the UI strings. Check the
 svn://svn.splayer.org:3690/svplayer/Setup/svplayer.msi/WiX/zh-cn.wxl for
 reference. Add a configuration in SvPlayer.wixproj. Pay attention to the
 Culture, locale and codepage. (You can get the information from
-MSDN:[http://msdn.microsoft.com/en-
-us/goglobal/bb896001.aspx](http://msdn.microsoft.com/en-
-us/goglobal/bb896001.aspx) ) Take the Russion for example:
+MSDN:[http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx](http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx) ) 
 
-[xml] <PropertyGroup Condition=" '$(Configuration)|$(Platform)' ==
-'ReleaseRU|x86' ">
-<DefineConstants>locale=1049;codepage=1251</DefineConstants> <Cultures>ru-
-RU</Cultures> <WixVariables> </WixVariables>
-<OutputPath>bin\$(Configuration)\</OutputPath> <IntermediateOutputPath>obj\$(P
-latform)\$(Configuration)\</IntermediateOutputPath> </PropertyGroup> [/xml]
+Take the Russion for example:
+
+		<PropertyGroup Condition=" '$(Configuration)|$(Platform)' =='ReleaseRU|x86' ">
+			<DefineConstants>locale=1049;codepage=1251</DefineConstants> 
+			<Cultures>ru-RU</Cultures> 
+			<WixVariables> </WixVariables>
+		    <OutputPath>bin\$(Configuration)\</OutputPath> 
+		    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath> 
+		</PropertyGroup>
 
 Change the WiX\build.bat to build the MSI fro the new language. Still take
 Russian for example:
 
-[shell]
-
-msbuild svplayer.wixproj /property:Configuration=ReleaseRU /l:FileLogger,Micro
-soft.Build.Engine;logfile=svplayer.ru.log;verbosity=detailed /t:Clean,Build
-
-[/shell]
+		msbuild svplayer.wixproj /property:Configuration=ReleaseRU /l:FileLogger,Microsoft.Build.Engine;logfile=svplayer.ru.log;verbosity=detailed /t:Clean,Build
 
 Create the transform: update the build.bat file under transform folder:
 
-[shell]
+		... 
+		msitran -g ..\wix\bin\Release\en-US\SvPlayer.msi ..\wix\bin\ReleaseRU\ru-RU\SvPlayer.msi ru.mst ... scripts\wisubstg.vbs ..\..\..\..\SPlayer.msi ru.mst	1049
+		scripts\WiLangId.vbs ..\..\..\..\SPlayer.msi Package 1033,2052,1028,1049
 
-... msitran -g ..\wix\bin\Release\en-US\SvPlayer.msi ..\wix\bin\ReleaseRU\ru-
-RU\SvPlayer.msi ru.mst ... scripts\wisubstg.vbs ..\..\..\..\SPlayer.msi ru.mst
-1049
-
-scripts\WiLangId.vbs ..\..\..\..\SPlayer.msi Package 1033,2052,1028,1049
-
-[/shell]
 
 Reference: [http://trac.splayer.org/changeset/1071](http://trac.splayer.org/ch
 angeset/1071) This changeset adds the Russian support.
