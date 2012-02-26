@@ -5,6 +5,78 @@ created: 2004-07-21 13:42:00
 %}
 
 {% block article %}
+
+From the newsgroup:
+
+
+	Andre W B Furtado wrote:
+	>
+	>I've made some changes do the babel source and would like to compile it
+	>
+	>giving it a new ID. What previous GUID(s) do I need to change?
+	> 
+	> 
+	> Answering myself, I think the following steps are OK to create a new
+	> babelpackage.dll:
+	> 
+	> 1) Generate a new GUID (can be done with guidgen windows application)
+	> 2) Backup babel source code in a safe place
+	> 3) Open Babel source code (lservice solution)
+	> 4) In the beginning of the file dllmain.cpp, change the value of "const
+	> CLSID clsidBabelPackage" with the guid you've created
+	> 5) In dllmain.def, rename "LIBRARY babelpackage" to "LIBRARY
+	> <newNameOfThePackage>"
+	> 6) Access lservice Property Pages
+	>   6a) In Linker / General, change the "Output" field to match the library
+	> name (ex.: Debug/newNameOfThePackage.dll instead of Debug/babelpackage.dll)
+	>   6b) Do the same to Linker / Debugging / "Generate Program Database file"
+	> field
+	>   6c) Do the same to Linker / Advanced / "Import Library" field
+	> 7) Rebuild the Babel solution
+	> 8) Move the generated newNameOfThePackage.dll to its definitive place (such
+	> as c:\windows\system32)
+	> 9) Register (with regsvr32) the generated newNameOfThePackage.dll
+	> 
+	> Obs: when you register the dll, it will register in the main branch, not in
+	> the Exp branch. In order to use this new babelpackage in development
+	> machines (which will probably be using the Exp branch), you must execute
+	> "VsRegEx.exe getorig  7.1 Exp" from [Program Files]\VSIP
+	> 7.1\EnvSDK\tools\bin\x86. This will copy the current VS.NET registry
+	> configuration from the main branch to the Exp branch. Be aware that, after
+	> doing this, you'll need to re-register any VSPackages that were under
+	> development.
+	> 
+	> Plase correct me if you see any issues!
+	> 
+	> Cheers,
+	> -- AFurtado
+	> 
+	> 
+	> 
+
+My Answer:
+
+	Agree with most of your opinion.
+
+	1. I don't think change the output name is needed.
+
+	2.
+	> Obs: when you register the dll, it will register in the main branch, not in
+	> the Exp branch. In order to use this new babelpackage in development
+	> machines (which will probably be using the Exp branch), you must execute
+	> "VsRegEx.exe getorig  7.1 Exp" from [Program Files]\VSIP
+	> 7.1\EnvSDK\tools\bin\x86. This will copy the current VS.NET registry
+	> configuration from the main branch to the Exp branch. Be aware that, after
+	> doing this, you'll need to re-register any VSPackages that were under
+	> development.
+	>
+
+	I think in the dllmain.cpp, we can add some code to retrieve the
+	environment value 'ENVSDK_REGKEY', then decided which registry hive we
+	will write to. The code to do this can be be stolen from the samples
+	come with VSIP like bscproject.
+
+	3. I changed all of the GUID in the .idl for safety.  ;) 
   
 
 {% endblock %}
