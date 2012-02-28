@@ -17,7 +17,7 @@ XML描述文件里除了一些信息如提供者的名字. URL之外, 主要的�
 一个自定义类: TimeLineCPI. 文件内容如下:
 
     
-     
+ {% syntax xml %}     
     <?xml version="1.0" encoding="utf-8" ?>
     <block class="FanfouClass">
     <providerName>Fanfou</providerName>
@@ -47,13 +47,13 @@ XML描述文件里除了一些信息如提供者的名字. URL之外, 主要的�
     </object>
     </objects>
     </block>
-    
+{% endsyntax %}    
 
   
 下面就要来看看JS文件了. 这里面主要就是Operation的实现了. 我是取得XML后, 分析一下, 得到各个Field的值. 代码如下:
 
     
-     
+  {% syntax js %}     
     function FanfouClass()
     {  
     }  
@@ -120,6 +120,7 @@ XML描述文件里除了一些信息如提供者的名字. URL之外, 主要的�
     TimeLineCPI.prototype.toString = function() {
     return "<p>"+this.text+"</p>";
     };
+  {% endsyntax %}
     
 
 没有错误处理, 呵呵, 仅仅是demo code. 好, 这个Block就算结束了. 怎么用到一个Mashup里去呢? 下一篇再讲.

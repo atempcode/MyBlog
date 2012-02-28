@@ -9,36 +9,44 @@ created: 2008-04-02 22:49:19
 Fedora 8 + xen 3.2
 
 **Issue: **  
-Can not start xend, the error log likes this: ` [2006-04-11 13:38:30 xend]
-INFO (SrvDaemon:278) Xend Daemon started [2006-04-11 13:38:30 xend] INFO
-(SrvDaemon:282) Xend changeset: unavailable . [2006-04-11 13:38:30 xend] ERROR
-(SrvDaemon:292) Exception starting xend ((2, 'No such file or directory'))
-Traceback (most recent call last): File "/usr/lib/python2.3/site-
-packages/xen/xend/server/SrvDaemon.py", line 286, in run servers =
-SrvServer.create() File "/usr/lib/python2.3/site-
-packages/xen/xend/server/SrvServer.py", line 108, in create
-root.putChild('xend', SrvRoot()) File "/usr/lib/python2.3/site-
-packages/xen/xend/server/SrvRoot.py", line 40, in __init__ self.get(name) File
-"/usr/lib/python2.3/site-packages/xen/web/SrvDir.py", line 82, in get val =
-val.getobj() File "/usr/lib/python2.3/site-packages/xen/web/SrvDir.py", line
-52, in getobj self.obj = klassobj() File "/usr/lib/python2.3/site-
-packages/xen/xend/server/SrvDomainDir.py", line 39, in __init__ self.xd =
-XendDomain.instance() File "/usr/lib/python2.3/site-
-packages/xen/xend/XendDomain.py", line 582, in instance inst.init() File
-"/usr/lib/python2.3/site-packages/xen/xend/XendDomain.py", line 70, in init
-xstransact.Mkdir(VMROOT) File "/usr/lib/python2.3/site-
-packages/xen/xend/xenstore/xstransact.py", line 317, in Mkdir complete(path,
-lambda t: t.mkdir(*args)) File "/usr/lib/python2.3/site-
-packages/xen/xend/xenstore/xstransact.py", line 323, in complete t =
-xstransact(path) File "/usr/lib/python2.3/site-
-packages/xen/xend/xenstore/xstransact.py", line 20, in __init__
-self.transaction = xshandle().transaction_start() File "/usr/lib/python2.3
-/site-packages/xen/xend/xenstore/xsutil.py", line 18, in xshandle xs_handle =
-xen.lowlevel.xs.xs() RuntimeError: (2, 'No such file or directory')`
+Can not start xend, the error log likes this: 
+
+	[2006-04-11 13:38:30 xend] INFO (SrvDaemon:278) Xend Daemon started
+	[2006-04-11 13:38:30 xend] INFO (SrvDaemon:282) Xend changeset: unavailable .
+	[2006-04-11 13:38:30 xend] ERROR (SrvDaemon:292) Exception starting xend ((2, 'No such file or directory'))
+	Traceback (most recent call last):
+	File "/usr/lib/python2.3/site-packages/xen/xend/server/SrvDaemon.py", line 286, in run
+	servers = SrvServer.create()
+	File "/usr/lib/python2.3/site-packages/xen/xend/server/SrvServer.py", line 108, in create
+	root.putChild('xend', SrvRoot())
+	File "/usr/lib/python2.3/site-packages/xen/xend/server/SrvRoot.py", line 40, in __init__
+	self.get(name)
+	File "/usr/lib/python2.3/site-packages/xen/web/SrvDir.py", line 82, in get
+	val = val.getobj()
+	File "/usr/lib/python2.3/site-packages/xen/web/SrvDir.py", line 52, in getobj
+	self.obj = klassobj()
+	File "/usr/lib/python2.3/site-packages/xen/xend/server/SrvDomainDir.py", line 39, in __init__
+	self.xd = XendDomain.instance()
+	File "/usr/lib/python2.3/site-packages/xen/xend/XendDomain.py", line 582, in instance
+	inst.init()
+	File "/usr/lib/python2.3/site-packages/xen/xend/XendDomain.py", line 70, in init
+	xstransact.Mkdir(VMROOT)
+	File "/usr/lib/python2.3/site-packages/xen/xend/xenstore/xstransact.py", line 317, in Mkdir
+	complete(path, lambda t: t.mkdir(*args))
+	File "/usr/lib/python2.3/site-packages/xen/xend/xenstore/xstransact.py", line 323, in complete
+	t = xstransact(path)
+	File "/usr/lib/python2.3/site-packages/xen/xend/xenstore/xstransact.py", line 20, in __init__
+	self.transaction = xshandle().transaction_start()
+	File "/usr/lib/python2.3/site-packages/xen/xend/xenstore/xsutil.py", line 18, in xshandle
+	xs_handle = xen.lowlevel.xs.xs()
+	RuntimeError: (2, 'No such file or directory')
 
 **Workaround:**  
 http://lists.alioth.debian.org/pipermail/pkg-xen-devel/2006-April/000437.html
 
-Try:` mkdir -p /var/run/xenstored /etc/init.d/xend start `
+Try: 
+
+	mkdir -p /var/run/xenstored 
+	/etc/init.d/xend start
 
 {% endblock %}
