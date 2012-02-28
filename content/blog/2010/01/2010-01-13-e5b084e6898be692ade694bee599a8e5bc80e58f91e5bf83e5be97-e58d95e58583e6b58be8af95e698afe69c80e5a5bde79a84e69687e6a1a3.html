@@ -9,15 +9,14 @@ created: 2010-01-13 22:18:47
 最近在看射手播放器的代码， 想趁着空闲，尝试向自己喜欢的开源工具做点贡献。
 
 已经养成习惯，写没有单元测试的代码总觉得不舒服，于是就尝试着把[Google
-Test](http://code.google.com/p/googletest/)加到项目里。GTest 是Google的开源 C++
-测试框架，在很多项目包括 [Chromium](http://code.google.com/p/chromium/)
+Test](http://code.google.com/p/googletest/)加到项目里。GTest 是Google的开源 C++ 测试框架，在很多项目包括 [Chromium](http://code.google.com/p/chromium/)
 里都在使用。和SQLITE一样，GTEST 支持“Fusing”，可以把原来的30多支源代码文件“打包”成两个文件：一个 .h，一个
 .cpp。把这两个文件加入到代码树，建一个LIB项目，编译出gtest.lib就可以开始写测试用例了。
 
 这是一个简单的测试 getVideoFileBasename 函数的case：
 
     
-       
+{% syntax c %}          
     TEST(SvpToolsBoxTest, getVideoFileBasename) 
     {
       TCHAR szName[] = _T("c:\\folder\\name.ext");
@@ -29,7 +28,7 @@ Test](http://code.google.com/p/googletest/)加到项目里。GTest 是Google的�
       ASSERT_TRUE(retArray[2]==_T("c:\\folder\\"));
       ASSERT_TRUE(retArray[3]==_T("name"));
     }
-
+{% endsyntax %}   
   
 
 
@@ -53,10 +52,7 @@ Test](http://code.google.com/p/googletest/)加到项目里。GTest 是Google的�
 
 3. 单元测试是可调试的。如果有exception或运行不正确，可以随时把调试器attach上去。
 
-  
-
-
-  
+   
 
 射手播放器的代码实现有些地方并不 unittest-friendly，继续研究中。
 

@@ -5,29 +5,29 @@ created: 2010-01-05 21:49:11
 %}
 
 {% block article %}
-Current SPlayer MSI supports English, Simplified Chinese, Traditional Chinese
+Currently SPlayer MSI supports English, Simplified Chinese, Traditional Chinese
 and Russian. To add a new language: Check if the languiage is supported in Wix
-3. these languages are supported: cs-cz, de-de, en-us, es-es, fr-fr, hu-hu,
-it-it, ja-jp, nl-nl, pl-pl, ru-ru, uk-ua. if not, you need to create your own
-translation of the UI strings. Check the
-svn://svn.splayer.org:3690/svplayer/Setup/svplayer.msi/WiX/zh-cn.wxl for
+3. These languages are supported: cs-cz, de-de, en-us, es-es, fr-fr, hu-hu,
+it-it, ja-jp, nl-nl, pl-pl, ru-ru, uk-ua. If not, you need to create your own
+translation of the UI strings. Check the [Chinese wxl file](
+svn://svn.splayer.org:3690/svplayer/Setup/svplayer.msi/WiX/zh-cn.wxl) for
 reference. Add a configuration in SvPlayer.wixproj. Pay attention to the
 Culture, locale and codepage. (You can get the information from
-MSDN:[http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx](http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx) ) 
+[MSDN](http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx) ) 
 
 Take the Russion for example:
 
 {% syntax xml %}
-		<PropertyGroup Condition=" '$(Configuration)|$(Platform)' =='ReleaseRU|x86' ">
-			<DefineConstants>locale=1049;codepage=1251</DefineConstants> 
-			<Cultures>ru-RU</Cultures> 
-			<WixVariables> </WixVariables>
-		    <OutputPath>bin\$(Configuration)\</OutputPath> 
-		    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath> 
-		</PropertyGroup>
+<PropertyGroup Condition=" '$(Configuration)|$(Platform)' =='ReleaseRU|x86' ">
+	<DefineConstants>locale=1049;codepage=1251</DefineConstants> 
+	<Cultures>ru-RU</Cultures> 
+	<WixVariables> </WixVariables>
+    <OutputPath>bin\$(Configuration)\</OutputPath> 
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath> 
+</PropertyGroup>
 {% endsyntax  %}
 
-Change the WiX\build.bat to build the MSI fro the new language. Still take
+Change the WiX\build.bat to build the MSI for the new language. Still take
 Russian for example:
 
 > msbuild svplayer.wixproj /property:Configuration=ReleaseRU /l:FileLogger,Microsoft.Build.Engine;logfile=svplayer.ru.log;verbosity=detailed /t:Clean,Build
