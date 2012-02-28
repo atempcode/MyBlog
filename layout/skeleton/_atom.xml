@@ -19,7 +19,7 @@
     
     <id>{{ site.full_url }}/</id>
     
-    {% recent_posts recents 4 page.blog_node %}
+    {% recent_posts recents 5 page.blog_node %}
 
     {% for post in recents %}
         {% if not post.listing and not post.exclude %}
