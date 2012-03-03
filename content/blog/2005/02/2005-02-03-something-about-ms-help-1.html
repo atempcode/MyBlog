@@ -1,0 +1,56 @@
+{% extends "_post.html" %}
+{% hyde
+title: Something about MS Help 2 (1) – Visual Studio .Net 的帮助系统 
+created: 2005-02-03 10:56:00
+%}
+
+{% block article %}
+
+What is MS Help2?
+-----------------
+**Good** – MS Help 2 是Microsoft继 HTML Help后的新一代帮助系统。VS.Net的帮助系统就是基于MS Help2 技术构建的。
+
+ 
+
+**Bad**   – Microsoft 决定不单独分发 MS Help 2 Runtime. 只有安装以下任一MS产品才能获得MS Help2 Runtime:
+
+* Visual Studio .NET
+* MSDN Library (must be new H2 based one)
+* Tech Net (must be new H2 based one)
+* .NET Framework SDK
+* Microsoft Office XP Developer
+
+**Interesting** – Borland 在新版本的.Net 开发环境 (C# Builder, Delphi 8) 中也使用了MS Help 2 做帮助系统。
+
+ 
+
+Who will create Help Content in MS Help2?
+-----------------------------------------
+想要把自己帮助内容集成到VS.Net 中去的人。大概有：
+
+* .Net Component 开发者
+* VS.Net Add-In 开发者
+* VSIP Package 开发者
+
+博客园里应该第一种人最多，而我不幸是第三种人。
+
+Useful tools and links
+----------------------
+
+* Microsoft Help 2.0 SDK
+
+* FAR， H2Reg ( http://www.helpware.net/FAR/index.html )
+
+* Doc-To-Help 7.5 (http://www.componentone.com )
+
+ 
+
+**Tip:** 想要知道有多少 Help Collections 安装到你机器上吗？想要知道又有多少 Help Collections 安装到了 MSCC 里吗？在IE 的地址栏或VS.Net 的web toolbar上的地址栏里输入:
+
+`ms-help://MS.VSCC.2003/VSCCCommon/cm/CollectionManager.htm`
+
+在这一页面上你还可以选择 从VSCC 中添加或移除 Help Collections.
+
+Aaron用这个页面解决了安装VSIP Extras后只有VSIP的文档显示在Content里的痛苦。 如果你发现你的VS.Net集成帮助不正常了，也可以试试这个办法。
+
+{% endblock %}
