@@ -8,3 +8,4 @@ pylint*
 *.tmproj
 test_site
 settings_p.py
+content/blog/index.html.o

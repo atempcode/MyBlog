@@ -1,6 +1,29 @@
-{% extends "skeleton/_listing.html" %}
-
+{% extends "_archives.html" %}
 {% hyde
     title: "Blog"
     exclude: True
 %}
+{% block listing %}
+<ul>
+{% for node in page.node.walk reversed %}
+{% for post in node.pages %}
+{% ifnotequal post node.listing_page %}
+{% if not post.exclude %}
+    {% ifchanged post.created.year %}
+    <li><h2>{{post.created|date:"Y"}} </h2></li>
+    {% endifchanged %}
+    <li>
+        <time pubdate>{{post.created|date:"j/m"|title}}</time>
+        <a href="{{post.url}}">
+        {% with post.name_without_extension|remove_date_prefix|unslugify as default_title %}
+            {% filter typogrify %}
+            {{post.title|default_if_none:default_title }}
+            {% endfilter %}
+        {%endwith%}</a>
+    </li>
+{% endif %}
+{% endifnotequal %}    
+{% endfor %}
+{% endfor %}
+</ul>
+{% endblock %}
