@@ -9,11 +9,9 @@
 {% for post in node.pages %}
 {% ifnotequal post node.listing_page %}
 {% if not post.exclude %}
-    {% ifchanged post.created.year %}
-    <li><h2>{{post.created|date:"Y"}} </h2></li>
-    {% endifchanged %}
+    {% ifchanged %}<h2>{{post.created|date:"Y"}}</h2>{% endifchanged %}
     <li>
-        <time pubdate>{{post.created|date:"j/m"|title}}</time>
+        <time pubdate>{{post.created|date:"m/j"|title}}</time>
         <a href="{{post.url}}">
         {% with post.name_without_extension|remove_date_prefix|unslugify as default_title %}
             {% filter typogrify %}
