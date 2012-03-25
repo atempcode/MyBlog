@@ -1,5 +1,6 @@
 *~
 *.pyc
+.hyde_deps
 deploy/*
 *.cprof
 *.profile
