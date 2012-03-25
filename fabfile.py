@@ -7,18 +7,20 @@ DEST_PATH = '/home/michael_he/hezhigeng.com/newblog'
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 DEPLOY_PATH = os.path.join(ROOT_PATH, 'deploy')
 
+hydecmd = '../hyde1.0/h'
+
 def clean():
     local('rm -rf ./deploy')
 
 def generate():
-    local('python ../hyde/hyde.py -g -s .')
+    local('python '+ hydecmd + ' gen')
 
 def regen():
     clean()
     generate()
 
 def serve():
-    local('python ../hyde/hyde.py -w -s . -k -p 8081')
+    local('python '+ hydecmd + ' -w -s . -k -p 8081')
 
 def reserve():
     regen()
