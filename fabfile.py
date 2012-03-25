@@ -12,12 +12,12 @@ hydecmd = '../hyde1.0/h'
 def clean():
     local('rm -rf ./deploy')
 
-def generate():
-    local('python '+ hydecmd + ' gen')
+def gen():
+    local('python '+ hydecmd + ' -v gen')
 
 def regen():
     clean()
-    generate()
+    gen()
 
 def serve():
     local('python '+ hydecmd + ' -w -s . -k -p 8081')
