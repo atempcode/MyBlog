@@ -7,7 +7,7 @@
     <link href="{{base}}{{ content_url(resource.url) }}" rel="self" />
     <id>{{ content_url(resource.url) }}/</id>
 
-    {% for res in resource.node|attr("walk_resources_sorted_by_time_" + resource.meta.language)()|top(6) %}
+    {% for res in resource.node|attr("walk_resources_sorted_by_time" )()|top(6) %}
     {% if loop.first %}
     <updated>{{ res.meta.modified|xmldatetime }}</updated>
 
