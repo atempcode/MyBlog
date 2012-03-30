@@ -7,18 +7,7 @@
 
 
     <div id="leaf-stats" class="group">
-        {% if page.flattr %}
-            <div class="flattr">
-                <a class="FlattrButton" style="display:none;" rev="flattr;button:compact;"
-                   href="http://stevelosh.com{{ page.url }}"></a>
-           </div>
-        {% endif %}
         <p>
-            Posted
-            <span class="timeago"
-                  title="{{ page.created|date:"Y-m-d" }}T{{ page.created|date:"H:i:s" }}">
-            </span>
-            on {{ page.created|date:"F j, Y" }}.
            <g:plusone size="medium" annotation="inline"></g:plusone>
            <!-- Place this render call where appropriate -->
             <script type="text/javascript">
@@ -33,15 +22,11 @@
     </div>
 
     <div id="leaf-content" class="{% block article_class %}{% endblock %}">
-        {% filter typogrify %}
-            {% article %}
-                {% filter typogrify %}
-                    {% markdown toc def_list %}
-                        {% block article %}{% endblock %}
-                    {% endmarkdown %}
-                {% endfilter %}
-            {% endarticle %}
-        {% endfilter %}
+        {% filter markdown|typogrify -%}
+        {% mark post -%}
+        {% block post -%}{%- endblock %}
+        {%- endmark %}
+        {%- endfilter %}
     </div>
     <div id="disqus_thread"></div>
     <script type="text/javascript">

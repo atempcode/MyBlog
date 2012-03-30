@@ -2,6 +2,7 @@
 *.pyc
 .hyde_deps
 deploy/*
+deploy.1/
 *.cprof
 *.profile
 *.log
