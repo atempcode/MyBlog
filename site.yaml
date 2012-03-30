@@ -41,7 +41,7 @@ meta:
     nodemeta: meta.yaml
     created: !!timestamp 2011-09-17 20:59:00
     author: Michael He 
-    description: A website 
+    description: Into The Void
     viewport: width=device-width
     charset: utf-8
     copyright: "&copy; Copyright 2010&mdash;2012 Michael He" 
