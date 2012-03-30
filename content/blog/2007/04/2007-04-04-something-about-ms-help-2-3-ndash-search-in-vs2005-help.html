@@ -6,7 +6,7 @@ created: 2007-04-04 14:22:00
 VS2005 的帮助search中有两个新的概念: categories 和 filters. 图中 Language就是一个Category,
 它包含了很多filters. 这些filter (象 C#, C++等) 是以checkbox的形式表现, 可想而知他们之间是 OR 的关系.
 
-![](/newblog/media/images/blog/2007/04/helphelp_thumb[2].png)
+![](/media/images/blog/2007/04/helphelp_thumb[2].png)
 
 假设我们现在为BIOS开发准备一套帮助, 并准备把它集成到VS2005的帮助系统中. 我们想定义一个新的 categories 叫 BIOS Tech,
 里面有两个filters: Phoenix和Award, 分别对应两种不同的BIOS, 哪应该怎么做呢?
@@ -79,7 +79,7 @@ Phoenix.xml
 
 对照这个图, 看看大家就会明白这些tag是什么意思, 不用多讲.
 
-[![](/newblog/media/images/blog/2007/04/helphelp2_thumb.png)](/newblog/media/images/blog/2007/04/helphelp2_thumb.png)
+[![](/media/images/blog/2007/04/helphelp2_thumb.png)](/media/images/blog/2007/04/helphelp2_thumb.png)
 
 要注意的是("Bios_Tech"="Phoenix"), 这是真正起作用的filter表达式.
 如果想让一页内容在对应Phoenix的filter的search中被找到, 那就要在这一页的document attributes中加上
