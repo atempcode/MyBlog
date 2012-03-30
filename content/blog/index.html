@@ -1,26 +1,27 @@
-{% extends "_archives.html" %}
 ---
     title: "Blog"
     exclude: True
+    listable: false 
+    created: 2011-06-24 23:45:17
 ---
+
+{% extends "_archives.html" %}
+
 {% block listing %}
 <ul>
-{% for node in page.node.walk reversed %}
-{% for post in node.pages %}
-{% ifnotequal post node.listing_page %}
-{% if not post.exclude %}
-    {% ifchanged %}<h2>{{post.created|date:"Y"}}</h2>{% endifchanged %}
+
+{% for res in resource.node.walk_resources_sorted_by_time() %} 
+
     <li>
-        <time pubdate>{{post.created|date:"m/j"|title}}</time>
-        <a href="{{post.url}}">
-        {% with post.name_without_extension|remove_date_prefix|unslugify as default_title %}
-            {% filter typogrify %}
-            {{post.title|default_if_none:default_title }}
-            {% endfilter %}
-        {%endwith%}</a>
+        <time pubdate>{{res.meta.created.strftime("%Y-%m-%d")}}</time>
+        <a href="{{res.url}}">
+            {{ res.meta.title }}
+        </a>
     </li>
-{% endif %}
-{% endifnotequal %}    
-{% endfor %}
+
 {% endfor %}
 </ul>
+{% endblock %}
+
+
+
