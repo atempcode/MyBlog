@@ -1,0 +1,81 @@
+---
+title: Advanced daily build - Auto update build number and lable the source code and
+  bin output
+created: 2004-07-29 01:03:00
+---
+
+Several days ago, coolbug posted a [useful
+ducument](http://www.cnblogs.com/coolbug/articles/27735.aspx) about the daily
+build. Very instructive. But it missed some important points IMO.
+
+For the daily build, I need:
+
+1. The build number should be increased automaticly.
+
+2. If QA or customer report a bug on a specfic version, I should find the
+source code, binary outpur and pdb file for that version quickly.
+
+So the idea procedure should be:
+
+1. daily build system check out the source code from server.
+
+2. daily build system automatically inceased the build number according to
+some rules I set.
+
+3. daily build system do the build.
+
+4. If build successfully, daily build system check in version information
+files it changed and the build output(exe, dll and pdb).
+
+5. daily build system label the whole code tree inculding the source code and
+output.
+
+6. [nice to have] daily build system publish the build information to project
+web. The information should have the build output, build number, links to
+build output.
+
+Let's try to find the solution.
+
+For the auto-increcement of build number, I found the task in the NANTContrib. It can generate the build number according to some rules.
+
+This will generate the new version with the build number as `(month of today - month of start date)* 100 + today's date`, and the revision number as the
+number of seconds since the start of today.
+
+Our company's version policy does has some difference definition of the four
+parts of the version number. so i make some change to the versiontask.cs to
+fit my need.
+
+I also need the version number to be in the final output. After google, I
+found that the author of the version task has do [some
+work](http://www.iunknown.com/000103.html) to make this happen. In Ant, there
+is the filter feature. John ported it to NANT.
+
+In my last blog entry, I introduced the way to manage the centralized version
+info. I can create a abc.ver.txt with the content 
+
+{% syntax c %}
+#define VER_FILEVERSION @NumVersion@ 
+#define VER_COMPANYNAME_STR "XYZ Ltd." 
+#define VER_FILEDESCRIPTION_STR "ABC" 
+#define VER_FILEVERSION_STR "@Version@" 
+#define VER_LEGALCOPYRIGHT_STR "Copyright (C) 2004 XYZ Ltd. " 
+#define VER_PRODUCTNAME_STR "XYZ's ABC " 
+{% endsyntax %}
+
+We will replace the `@NumVersion@` and
+`@Version@` with the actual version number in the following task:
+
+The `${sys.version}` is the version number generated in the version task in
+x.x.x.x format. The `NumVersion` is the version number in x,x,x,x format. When
+copy from the abc.ver.txt to abc.ver, the filter will replace the `@xx@` with
+the filter value.
+
+John made changes to an old version of NANT, I have merge the changes to the
+0.84 of NANT. I never do C# programming before, but it is so easy to learn
+that after 10 minutes of coding, the NANT compiled with my change. [Here](http://s2.yousendit.com/d.aspx?id=452468DCBB002304DB108BF55D45940D) are
+the added and modified file.
+
+Next is to check in and label everything. It is relatively easy.
+
+Maybe I will talk about the publishing to web in another blog entry.
+

@@ -1,0 +1,21 @@
+---
+title: Subversion in 2010
+created: 2010-01-27 22:12:02
+---
+
+作为一个Subversion的“快乐的用户”，我还是蛮关心这个项目的动态的。Subversion已经进入Apache基金会的孵化器,
+而几位大牛都加入了wandisco. 说到[wandisco](http://www.wandisco.com/)，以前还用过他们的[Subversion同
+步解决方案](http://www.wandisco.com/subversion/multisite/)，用户checkin到本地server，chang
+eset马上同步到全球各个办公室的server。当初好像和我们的commit hook不太兼容，经常把server搞得read only 甚至当掉。后来专门
+打了patch，才渐渐稳定下来。这个方案很贵，在我看来并不比suversion内置的强，只是让用户更傻瓜了。Anyway，最近wandisco举行了一个[讲
+座](http://www.slideshare.net/wandisco/subversion-in-2010-and-
+beyond)，几位大牛畅谈2010年及以后的subversion，颇有营养:
+
+今年最重要的里程碑应该是1.7的发布。几个新feature很值得期待：
+
+  * HTTPv2：根据调查，一半以上的用户使用http的方式来连接serer，27%的使用SVN protocol。Http最大的问题是比svnserver慢，在LAN上可能感觉不出来，到了WAN上就不一样了。Httpv2会通过减少roundtrip的方法来提高速度。在1.7里[serf](http://code.google.com/p/serf/)会替代[neon](http://www.webdav.org/neon/)成为缺省的http连接库，它同步处理有优势，应该也会提高一些速度。
+  * WC-NG：working copy next generation。使用subversion最不爽的就是它在客户端存放meta data的方法。每个目录下都有个.svn目录，里面text-base下有本目录下文本文件的“纯净”版本。本来windows处理象代码树这样大量的小文件就很慢，它还要来double一下，搞得人不堪忍受。在1.7里面这些meta data会存到一个SQLite数据库里。仅仅这个feature我就会毫不犹豫的升级。
+  * Obliterating history：抹消历史。现在的svn处理版本时就是单行线，一旦check in，这个版本就永远在库里了。有时候需要消除掉一些历史版本，象错误check in的private key，或干掉很大的现在又没用的文件。这个feature会有一部分在1.7里。
+
+那么1.7会在什么时候发布呢？现在并没有确定的日期，只是大概在上半年，“it’s done when it’s done” ;)
+

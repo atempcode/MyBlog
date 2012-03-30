@@ -1,0 +1,15 @@
+---
+title: Sqlite和Mcafee Anti-Virus
+created: 2006-11-01 21:57:00
+---
+
+Hipp博士是佷受欢迎的自由软件sqlite的作者。他佷慷慨地把sqlite这样一个高效，紧凑的数据库软件贡献给了public－domain，从Python到Phlips的MP3播放器到我最近的一个项目都使用了sqlite。这样一位受人尊敬的专业人士最近却很为一件事情烦恼：他经常受到一些email，电话抱怨他在散布病毒或间谍软件。因为他们发现在自己电脑的temp目录里有很多不能删除的文件，这些文件都是以sqlite开头的。
+
+在一番调查之后，Hipp博士发现是McAfee干的好事：McAfee在他们的Anti-Virus中集成了sqlite，却没有及时的删除这些临时文件。在联系McAfee没有积极回应之后，他发了一份email到sqlite的maillist，征求大家的意见。
+
+回应很多，有的建议hack sqlite的源码，检测到McAfee产品时把临时文件命名为mcafee_xxxxxxxxx ; 有人立即在Slashdot上发布了这个消息要求呼应；有人提供了McAfee内部从build manager到新任CEO的名字...
+
+Hipp博士最后决定把临时文件的前缀改成etilqs （反过来读读...）,同时增加了一个definition： TEMP_FILE_PREFIX，这样 DTEMP_FILE_PREFIX="mcafee_" 编译出的程序生成的临时文件会以mcafee开头。
+
+我喜欢这个解决方法，just like Sqlite, so simple and so elegent.
+

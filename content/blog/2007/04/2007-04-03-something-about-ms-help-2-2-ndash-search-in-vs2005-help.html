@@ -1,0 +1,25 @@
+---
+title: Something about MS Help 2 (2) – What's new in VS2005
+created: 2007-04-03 14:20:00
+---
+
+
+[上一篇](/newblog/blog/2005/02/2005-02-03-something-about-ms-help-1.html) 已经是2年以前的了, 惭愧啊惭愧...两年可以发生很多事情, VS2005发布了, Orcas也有了CTP... 这篇就讲讲VS2005里 MS Help2的变化吧...
+
+1. Microsoft Help 2.0 SDK不再是一个可单独下载的包, 它现在是VS SDK的一部分.
+
+2. 第三方的help collection推荐整合到MS.VSIPCC.v80命名空间里, 而不是直接整合到MS.VSCC.v80. (在VS2003时代, 第三方的help collection是直接整合到MS.VSCC.2003的).
+
+3. VS SDK里现在有一个免费的工具HelpStudio Lite可以帮助你开发帮助系统.
+
+4. Search功能有了很大的变化. 有三类filter: Language, Technology and Content Type. 怎么在自己的help里利用这些功能呢? 下一篇就讲这个...
+
+ 
+**Tip:** [Update for VS2005 ]想要知道有多少 Help Collections 安装到你机器上吗？想要知道又有多少 Help Collections 安装到了 MSCC 里吗？在IE 的地址栏或VS2005 的web toolbar上的地址栏里输入:
+
+`ms-help://MS.VSCC.v80/dv_vscccommon/local/CollectionManager.htm`
+
+在这一页面上你还可以选择 从VSCC 中添加或移除 Help Collections.
+
+如果你安装过了OFFICE2007, 你也会发现类似MS.EXCEL.12.1033的namespace, Office2007的帮助系统也是MS HELP2了.
+

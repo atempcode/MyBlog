@@ -1,0 +1,34 @@
+---
+title: miscs
+created: 2008-07-10 17:29:16
+---
+
+* apt-get cache on Ubutun: /var/cache/apt/archives  
+* cn99 source: 
+    
+    
+    deb http://ubuntu.cn99.com/ubuntu/ hardy main restricted universe multiverse
+    deb http://ubuntu.cn99.com/ubuntu/ hardy-security main restricted universe multiverse
+    deb http://ubuntu.cn99.com/ubuntu/ hardy-updates main restricted universe multiverse
+    deb http://ubuntu.cn99.com/ubuntu/ hardy-proposed main restricted universe multiverse
+    deb http://ubuntu.cn99.com/ubuntu/ hardy-backports main restricted universe multiverse
+    deb-src http://ubuntu.cn99.com/ubuntu/ hardy main restricted universe multiverse
+    deb-src http://ubuntu.cn99.com/ubuntu/ hardy-security main restricted universe multiverse
+    deb-src http://ubuntu.cn99.com/ubuntu/ hardy-updates main restricted universe multiverse
+    deb-src http://ubuntu.cn99.com/ubuntu/ hardy-proposed main restricted universe multiverse
+    deb-src http://ubuntu.cn99.com/ubuntu/ hardy-backports main restricted universe multiverse
+    deb http://ubuntu.cn99.com/ubuntu-cn/ hardy main restricted universe multiverse
+    
+
+* 备份快速设置已下载的部分软件包，以便重装系统再次使用，免去重新下载的时间 
+    
+    tar cizvf backup.tar.gz /var/cache/apt/archives --exclude=/var/cache/apt/archives/partial/* \
+     --exclude=/var/cache/apt/archives/lock
+    
+
+* 重装系统，设置好源列表后，导入已备份的软件包即可，操作方法： 
+    
+    
+    sudo apt-get update && sudo tar xzvf backup.tar.gz -C /
+    
+

@@ -1,0 +1,18 @@
+---
+title: Importing notes in Google Notebook to Evernote
+created: 2010-02-05 16:21:35
+---
+
+Google Notebook在去年被抛弃了, 最近一直在用[Evernote](https://www.evernote.com), 用的挺好的, 就想把原来在Google Notebook里的notes倒进来.
+
+Evernote 提供有 [Google Notebook importer](https://www.evernote.com/GoogleNotebooks.action), 按照它提供的方法需要先从 Google Notebook 里把notes输出为Atom格式. 不幸的是, Google 提供的Exporter 不能支持Unicode, 中文在导出的文件里是一个个的"?". Google已经不支持Notebook了, 只能自己想办法了. 好在Notebook还支持 [Google Data API](http://code.google.com/apis/notebook/docs/2.0/reference.html), 虽然已经Deprecated, 但输出个全文Atom还是不成问题的:
+
+    
+    curl http://www.google.com/notebook/feeds/userID/notebooks/notebookID?updated-max=2010-06-04T17:40:00-07:00&updated-min=2003-01-01T17:40:00-07:00&max-results=100
+
+  
+
+杯具总是一个接着一个的, 在[Google Notebook importer](https://www.evernote.com/GoogleNotebooks.action) 上导入这个文件, 得到的错误是格式不支持. 对比了一下从Google exporter上直接导出的, 没看出有什么大的区别, 我也懒得再比了, 自己动手, 丰衣足食:
+
+Evernote 支持从电子邮件生成note, 就是你往某个Evernote为你指定的信箱发mail, mail的内容会自动加为note.于是祭出Python, 写个脚本分析Atom, 把每个Entry发到信箱, 在Gmail的SMTP server 拒绝服务两次后, 终于全部导入. 现在除了导入Note的日期全是今天而不是原先的日期外, 一切正常. 我想, 用Evernote提供的API 能解决这个问题, 但目前是没时间折腾了.
+
