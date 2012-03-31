@@ -4,7 +4,7 @@
 {% macro list_posts() %}
 <ul>
 
-{% set source = site.content.node_from_relative_path('blog') %}
+{% set source = site.content.node_from_relative_path('nublog') %}
 {% for res in source.walk_resources_sorted_by_time() %}
 {% if loop.index < 6 %}
 <li><a href="{{ res.url }}">{{ res.meta.title }}</a></li>
