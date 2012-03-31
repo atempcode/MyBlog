@@ -65,8 +65,8 @@ tagger:
     sorter: time
     archives:
         blog:
-            source: blog
-            target: blog/tags
+            source: nublog
+            target: nublog/tags
             template: tagged_posts.j2
             archive_extension: html
             meta:

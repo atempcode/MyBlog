@@ -1,3 +1,0 @@
-extends: _post.html
-default_block: article
-listable: true  
