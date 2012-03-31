@@ -80,6 +80,6 @@ markdown:
 #    extension_configs:
 #        codehilite:
 #            force_linenos: 1
-less:
-    app: D:/src/newblog/less.js/bin/lessc
-#  app: l:/src/newblog/cloudhead-less.js-557177c/bin/lessc
+less: 
+#    app: D:/src/newblog/less.js/bin/lessc
+    app: l:/src/newblog/cloudhead-less.js-557177c/bin/lessc
