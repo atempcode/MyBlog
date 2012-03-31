@@ -63,14 +63,11 @@ sorter:
             meta.listable: true
 tagger:
     sorter: time
-    archives:
-        blog:
-            source: nublog
-            target: nublog/tags
-            template: tagged_posts.j2
-            archive_extension: html
-            meta:
-                listable: false
+    tags:
+        "Music":
+          descr: "Music"
+        "Gossip":
+          descr: "八卦"
 markdown:
     extensions:
         - toc
