@@ -1,6 +1,6 @@
 {% extends "skeleton/_base.html" %}
 
-{% block title %}{{site.name}} / {{ page.title }}{% endblock %}
+{% block title %} {{resource.meta.description|typogrify|e}} {% endblock %}
 
 {% block content %}
     {% block content_body %}{% endblock %}
