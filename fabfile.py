@@ -20,7 +20,7 @@ def regen():
     gen()
 
 def serve():
-    local('python '+ hydecmd + ' -w -s . -k -p 8081')
+    local('python '+ hydecmd + ' -v serve')
 
 def reserve():
     regen()
