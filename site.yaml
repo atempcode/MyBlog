@@ -88,4 +88,5 @@ markdown:
 #            force_linenos: 1
 less: 
 #    app: D:/src/newblog/less.js/bin/lessc
-    app: l:/src/newblog/cloudhead-less.js-557177c/bin/lessc
+#    app: l:/src/newblog/cloudhead-less.js-557177c/bin/lessc
+    app: /Users/michael_he/src/myblog/less.js/bin/lessc
